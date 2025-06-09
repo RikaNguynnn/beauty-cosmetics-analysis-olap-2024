@@ -13,7 +13,7 @@
 **Phân tích dữ liệu sản phẩm làm đẹp và mỹ phẩm hàng đầu thế giới năm 2024**  
 (*Top Beauty and Cosmetic Products Data Analysis 2024*)
 
-## Nhóm SV thực 
+## Nhóm SV thực hiện
 | STT | MSSV       | Họ và tên              | Vai trò      | Email                    |
 |-----|------------|------------------------|--------------|--------------------------|
 | 1   | 22520976   | Nguyễn Phan Thảo Nguyên | Nhóm trưởng | 22520976@gm.uit.edu.vn   |
@@ -53,5 +53,7 @@ Bao gồm thông tin về thương hiệu, loại sản phẩm, đánh giá, gi�
 ├── 22520976_22521374.docx # Báo cáo cuối kỳ
 └── README.md # Tài liệu mô tả dự án
 ```
+---
+
 ## Ghi chú
 Dự án được thực hiện với mục đích học thuật trong khuôn khổ môn học **Kho Dữ Liệu và OLAP** tại UIT – Đại học Công nghệ Thông tin, ĐHQG-HCM.
