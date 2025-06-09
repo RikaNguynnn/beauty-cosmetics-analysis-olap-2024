@@ -33,6 +33,16 @@ Phân tích các sản phẩm làm đẹp và mỹ phẩm nổi bật trên toà
 
 ---
 
+## Nguồn dữ liệu
+Dữ liệu sử dụng trong dự án được lấy từ Kaggle:
+
+🔗 [Most Used Beauty & Cosmetics Products In The World – Kaggle](https://www.kaggle.com/datasets/waqi786/most-used-beauty-cosmetics-products-in-the-world/data)
+
+Tác giả: [waqi786](https://www.kaggle.com/waqi786)  
+Bao gồm thông tin về thương hiệu, loại sản phẩm, đánh giá, giá bán, quốc gia, v.v.
+
+---
+
 ## Cấu trúc thư mục dự án
 ```
 /beauty-cosmetics-analysis-olap-2024
