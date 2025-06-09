@@ -34,6 +34,7 @@ Phân tích các sản phẩm làm đẹp và mỹ phẩm nổi bật trên toà
 ---
 
 ## Cấu trúc thư mục dự án
+```
 /beauty-cosmetics-analysis-olap-2024
 ├── Raw data/ # Dữ liệu gốc đã được làm sạch
 ├── Source/ # Mã nguồn và phân tích OLAP
@@ -41,3 +42,6 @@ Phân tích các sản phẩm làm đẹp và mỹ phẩm nổi bật trên toà
 ├── Phân công công việc.docx # File phân chia công việc nhóm
 ├── 22520976_22521374.docx # Báo cáo cuối kỳ
 └── README.md # Tài liệu mô tả dự án
+```
+## Ghi chú
+Dự án được thực hiện với mục đích học thuật trong khuôn khổ môn học **Kho Dữ Liệu và OLAP** tại UIT – Đại học Công nghệ Thông tin, ĐHQG-HCM.
