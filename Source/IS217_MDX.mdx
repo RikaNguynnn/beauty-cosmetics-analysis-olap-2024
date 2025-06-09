@@ -1,0 +1,235 @@
+﻿--Cau 1: Top 10 thuong hieu có diem rating trung binh cao nhat.
+WITH 
+MEMBER [Measures].[Average Rating] AS 
+    AVG([Dim Product].[Product ID].[Product ID].MEMBERS, [Measures].[Rating])
+SELECT 
+    NON EMPTY 
+    ORDER(
+        TOPCOUNT(
+            [Dim Brand].[Brand].[Brand].Members,
+            10,
+            [Measures].[Average Rating]
+        ),
+        [Dim Brand].[Brand].[Brand].Name, 
+        DESC
+    ) ON ROWS,
+    [Measures].[Average Rating] ON COLUMNS
+FROM [IS217]
+
+--Cau 2: Top 5 san pham thuan chay có so luot danh gia nhieu nhat cua thuong hieu Shiseido.
+SELECT 
+    [Measures].[Number Of Reviews] ON COLUMNS,
+    NON EMPTY 
+    ORDER(
+        TOPCOUNT(
+            [Dim Product].[Product ID].[Product ID].Members *
+            [Dim Product].[Product Name].[Product Name].Members,
+            5, 
+            [Measures].[Number Of Reviews]
+        ),
+        [Dim Product].[Product ID].[Product ID].Members,
+        DESC
+    ) ON ROWS
+FROM [IS217]
+WHERE 
+    (
+        [Dim Product].[Cruelty Free].&[True],
+        [Dim Brand].[Brand].&[Shiseido]     
+    );
+
+--Cau 3: Thong ke tong so san pham theo tung brand va tung category bat dau bang ky tu 'M'.
+SELECT
+    NON EMPTY 
+        FILTER(
+            [Dim Brand].[Brand].MEMBERS, 
+            LEFT([Dim Brand].[Brand].CurrentMember.Name, 1) = "M" 
+        ) ON ROWS,
+    NON EMPTY 
+        FILTER(
+            [Dim Product].[Category].MEMBERS, 
+            LEFT([Dim Product].[Category].CurrentMember.Name, 1) = "M"  
+        ) ON COLUMNS
+FROM [IS217] 
+WHERE 
+    ([Measures].[Fact Count]) 
+
+--Cau 4: Liet ke 10 san pham duoc san xuat o My và so luong danh gia cao nhat tu 9900 tro len.
+WITH
+    SET [USA_Product] AS
+        NONEMPTY(
+            [Dim Country].[Country Of Origin].&[USA] *
+            [Dim Product].[Product ID].[Product ID].MEMBERS *
+            [Dim Product].[Product Name].[Product Name].MEMBERS
+        )
+    SET [Filtered_Top_Products] AS
+        TOPCOUNT(
+            FILTER(
+                [USA_Product],
+                [Measures].[Number Of Reviews] >= 9900
+            ),
+            10,
+            [Measures].[Number Of Reviews]
+        )
+SELECT
+    NON EMPTY [Measures].[Number Of Reviews] ON COLUMNS,
+    NON EMPTY
+        ORDER(
+            [Filtered_Top_Products],
+            CINT([Dim Product].[Product ID].CURRENTMEMBER.Name),
+            BASC 
+        ) ON ROWS
+FROM [IS217];
+
+--Cau 5: Top 10 thuong hieu có so luong san pham nhieu nhat.
+SELECT 
+    [Measures].[Fact Count] ON COLUMNS,
+    ORDER(
+        TOPCOUNT(
+            [Dim Brand].[Brand].[Brand].MEMBERS,
+            10,
+            [Measures].[Fact Count]
+        ),
+        [Dim Brand].[Brand].NAME,
+        ASC
+    ) ON ROWS
+FROM [IS217]
+
+--Cau 6: Liet ke tat ca ten san pham, danh muc, loai bao bi và gia.
+SELECT 
+    NON EMPTY 
+    ([Dim Product].[Product Name].CHILDREN * 
+     [Dim Product].[Category].CHILDREN * 
+     [Dim Product].[Packaging Type].CHILDREN) ON ROWS, 
+    [Measures].[Price USD] ON COLUMNS 
+FROM [IS217]
+
+--Cau 7: Liet ke so luong san pham theo tung hang cua tung quoc gia tru Uc và My.
+SELECT 
+    NON EMPTY { [Measures].[Fact Count] } ON COLUMNS, 
+    NON EMPTY { 
+        EXCEPT(
+            ([Dim Brand].[Brand].[Brand].ALLMEMBERS * [Dim Country].[Country Of Origin].[Country Of Origin].ALLMEMBERS),
+            ([Dim Brand].[Brand].[Brand].ALLMEMBERS * {[Dim Country].[Country Of Origin].&[Australia], [Dim Country].[Country Of Origin].&[USA]})
+        )
+    } ON ROWS
+FROM [IS217] 
+
+--Cau 8: Liet ke TOP 3 san pham co doanh thu cao nhat do nuoc My san xuat (Doanh Thu = Number Of Reviews * Price USD)
+SELECT 
+    NON EMPTY { [Measures].[Doanh Thu] } ON COLUMNS, 
+    NON EMPTY { 
+        TOPCOUNT(
+            ([Dim Product].[Product ID].[Product ID].MEMBERS 
+             * [Dim Product].[Product Name].[Product Name].MEMBERS 
+             * [Dim Brand].[Brand].[Brand].MEMBERS 
+             * [Dim Country].[Country Of Origin].[Country Of Origin].&USA), 
+            3, 
+            [Measures].[Doanh Thu]
+        )
+    } ON ROWS
+FROM [IS217]
+
+--Cau 9: Liet ke ten, loai san pham, thuong hieu, quoc gia san xuat, rating va so luot danh gia 
+-- cua nhUng san pham co rating > 4.0 va number of reviews > 7000
+WITH 
+MEMBER [Measures].[Filtered Rating] AS 
+    IIF(
+        [Measures].[Rating] > 4.0 AND 
+        [Measures].[Number of Reviews] > 7000, 
+        [Measures].[Rating], 
+        NULL  
+    )
+MEMBER [Measures].[Filtered Number of Reviews] AS 
+    IIF(
+        [Measures].[Rating] > 4.0 AND 
+        [Measures].[Number of Reviews] > 7000, 
+        [Measures].[Number of Reviews],  
+        NULL 
+    )
+SELECT 
+    NON EMPTY 
+    [Dim Product].[Product ID].[Product ID].MEMBERS
+    * [Dim Product].[Product Name].[Product Name].MEMBERS
+    * [Dim Product].[Category].[Category].MEMBERS
+	* [Dim Brand].[Brand].[Brand].MEMBERS
+    * [Dim Country].[Country Of Origin].[Country Of Origin].MEMBERS ON ROWS,
+    NON EMPTY 
+    { 
+        [Measures].[Filtered Rating],  
+        [Measures].[Filtered Number of Reviews] 
+    } ON COLUMNS
+FROM [IS217]
+
+--Cau 10: Top 10 san pham Serum co dung tich > 50 danh cho da dau có gia re nhat.
+SELECT 
+    {[Measures].[Price USD]} ON COLUMNS,
+    ORDER(
+        HEAD(
+            ORDER(
+                FILTER(
+                    [Dim Product].[Product ID].[Product ID].Members,
+                    ([Dim Product].[Category].&[Serum]) AND 
+                    ([Dim Product].[Product Size].CURRENTMEMBER.MEMBER_VALUE > 50) AND
+                    ([Dim Product].[Skin Type].CURRENTMEMBER IS [Dim Product].[Skin Type].&[Oily])
+                ),
+                [Measures].[Price USD], ASC
+            ),
+            10
+        ) *
+        {[Dim Product].[Product Name].[Product Name].Members},
+        [Dim Product].[Product ID].CURRENTMEMBER.NAME, ASC
+    ) ON ROWS
+FROM [IS217]
+
+--Cau 11: Liet ke TOP 5 san pham co thanh phan chinh la vitamin C dot doanh thu cao nhat.
+SELECT 
+    [Measures].[Doanh Thu] ON COLUMNS,
+    NON EMPTY
+        ORDER(
+            TOPCOUNT(
+                FILTER(
+                    [Dim Product].[Product ID].[Product ID].Members *
+                    [Dim Product].[Product Name].[Product Name].Members,
+                    ([Dim Product].[Main Ingredient].CURRENTMEMBER IS [Dim Product].[Main Ingredient].&[Vitamin C])
+                ),
+                5,
+                [Measures].[Doanh Thu]
+            ),
+            [Dim Product].[Product ID].CURRENTMEMBER.NAME, ASC
+        ) ON ROWS
+FROM [IS217]
+
+--Cau 12: Thong ke gia, cac ten cac san pham danh cho nhay cam (sensitive) co thanh phan chinh (main ingredient) 
+--la Aloe Vera va quoc gia san xuat.
+SELECT 
+    NON EMPTY 
+    ([Dim Product].[Product ID].CHILDREN 
+	*[Dim Product].[Product Name].CHILDREN
+	*[Dim Country].[Country Of Origin].CHILDREN) ON ROWS, 
+    [Measures].[Price USD] ON COLUMNS  
+FROM [IS217]
+WHERE 
+    ([Dim Product].[Skin Type].[Sensitive],  
+     [Dim Product].[Main Ingredient].[Aloe Vera])
+
+--Cau 13: Liet ke cac san pham (Products) theo tung danh muc (Category)
+WITH 
+MEMBER [Measures].[Product List] AS
+    Generate(
+        Existing [Dim Product].[Product Name].[Product Name].MEMBERS,
+        [Dim Product].[Product Name].CURRENTMEMBER.Name,
+        ", "
+    )
+SELECT 
+    {[Measures].[Product List]} ON COLUMNS,
+    [Dim Product].[Category].[Category].MEMBERS ON ROWS
+FROM [IS217]
+
+
+
+
+
+
+
+
+

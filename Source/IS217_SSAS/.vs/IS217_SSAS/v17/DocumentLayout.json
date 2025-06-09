@@ -1,0 +1,40 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ADMIN\\Documents\\UIT\\N\u0103m 3\\HK1\\OLAP\\IS217_SSAS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D3A278AD-D085-48B0-8759-491A2B59B62A}|IS217_SSAS\\IS217_SSAS.dwproj|C:\\Users\\ADMIN\\Documents\\UIT\\N\u0103m 3\\HK1\\OLAP\\IS217_SSAS\\IS217_SSAS\\IS217.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
+      "RelativeMoniker": "D:0:0:{D3A278AD-D085-48B0-8759-491A2B59B62A}|IS217_SSAS\\IS217_SSAS.dwproj|solutionrelative:IS217_SSAS\\IS217.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IS217.cube [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Documents\\UIT\\N\u0103m 3\\HK1\\OLAP\\IS217_SSAS\\IS217_SSAS\\IS217.cube",
+              "RelativeDocumentMoniker": "IS217_SSAS\\IS217.cube",
+              "ToolTip": "C:\\Users\\ADMIN\\Documents\\UIT\\N\u0103m 3\\HK1\\OLAP\\IS217_SSAS\\IS217_SSAS\\IS217.cube [Design]",
+              "RelativeToolTip": "IS217_SSAS\\IS217.cube [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-11T11:56:29.18Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
